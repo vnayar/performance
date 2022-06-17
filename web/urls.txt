@@ -1,0 +1,3 @@
+http://localhost:8080/users/jim POST <test1.json
+http://localhost:8080/users/bob POST <test2.json
+http://localhost:8080/users/james POST <test2.json

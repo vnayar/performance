@@ -1,0 +1,8 @@
+name "web"
+description "A simple vibe.d server application."
+authors "Vijay Nayar"
+copyright "Copyright © 2022, Vijay Nayar"
+license "proprietary"
+dependency "vibe-core" version="~>1.22.1"
+dependency "vibe-d:web" version="~>0.9.4"
+dependency "vibe-d:http" version="~>0.9.4"

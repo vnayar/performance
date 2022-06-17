@@ -1,0 +1,345 @@
+* Test 1: Java / SpringBoot / OpenJDK 11.0.10
+
+** Full Compilation Time
+
+mvn clean
+mvn package
+
+#+BEGIN_QUOTE
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.233 s
+[INFO] Finished at: 2022-06-17T11:44:28+02:00
+[INFO] ------------------------------------------------------------------------
+
+real	0m9.816s
+user	0m34.764s
+sys	0m0.994s
+#+END_QUOTE
+
+** Incremental Compilation Time
+
+touch src/main/java/com/example/web/WebApplication.java
+mvn package
+
+#+BEGIN_QUOTE
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.158 s
+[INFO] Finished at: 2022-06-17T11:57:00+02:00
+[INFO] ------------------------------------------------------------------------
+#+END_QUOTE
+
+** Execution Time
+
+test.sh
+
+#+BEGIN_QUOTE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ ** SIEGE 4.0.4
+ ** Preparing 25 concurrent users for battle.
+ The server is now under siege...
+ Transactions:		       25000 hits
+ Availability:		      100.00 %
+ Elapsed time:		        4.84 secs
+ Data transferred:	        2.40 MB
+ Response time:		        0.00 secs
+ Transaction rate:	     5165.29 trans/sec
+ Throughput:		        0.50 MB/sec
+ Concurrency:		       24.37
+ Successful transactions:           0
+ Failed transactions:	           0
+ Longest transaction:	        0.23
+ Shortest transaction:	        0.00
+#+END_QUOTE
+
+** Binary Size
+
+16.8 MiB
+
+** Memory Usage
+
+#+BEGIN_SRC bash
+$ ps -o pid,tty,stat,time,%mem,rss,trs,vsz,command 12003
+    PID TT       STAT     TIME %MEM   RSS  TRS    VSZ COMMAND
+  12003 pts/1    Sl+  00:00:29  1.7 278564   3 10002048 /home/vnayar/.sdkman/candidates/java/11.0.1
+#+END_SRC
+
+Resident (Physical) Memory: 278.564 MiB
+Virtual (Total) Memory: 10,002.048 MiB
+
+* Test 2: D / Vibe.d / DMD v2.098.1 / Debug
+
+** Full Compilation Time
+
+time dub build --force
+
+#+BEGIN_QUOTE
+ Linking...
+
+ real	0m28.576s
+ user	0m23.415s
+ sys	0m4.654s
+#+END_QUOTE
+
+** Incremental Compilation Time
+
+touch source/app.d
+time dub build
+
+#+BEGIN_QUOTE
+ To force a rebuild of up-to-date targets, run again with --force.
+
+ real	0m7.451s
+ user	0m6.284s
+ sys	0m1.169s
+#+END_QUOTE
+
+** Execution Time
+
+dub run
+test.sh
+
+#+BEGIN_QUOTE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ ** SIEGE 4.0.4
+ ** Preparing 25 concurrent users for battle.
+ The server is now under siege...
+ Transactions:		       25000 hits
+ Availability:		      100.00 %
+ Elapsed time:		      158.83 secs
+ Data transferred:	        0.37 MB
+ Response time:		        0.16 secs
+ Transaction rate:	      157.40 trans/sec
+ Throughput:		        0.00 MB/sec
+ Concurrency:		       24.99
+ Successful transactions:       16675
+ Failed transactions:	           0
+ Longest transaction:	        0.48
+ Shortest transaction:	        0.00
+#+END_QUOTE
+
+** Binary Size
+
+36.7 MiB
+
+** Memory Usage
+
+#+BEGIN_SRC bash
+$ ps -o pid,tty,stat,time,%mem,rss,trs,vsz,command 13791
+    PID TT       STAT     TIME %MEM   RSS  TRS    VSZ COMMAND
+  13791 pts/1    S+   00:00:00  0.0 12768 8220  56876 /home/vnayar/projects/performance/d/web/web
+#+END_SRC
+
+Resident (Physical) Memory: 12.768 MiB
+Virtual (Total) Memory: 56.876 MiB
+
+* Test 3: D / Vibe.d / DMD v2.098.1 / Release
+
+** Full Compilation Time
+
+time dub build --force -b release
+
+#+BEGIN_QUOTE
+ Linking...
+
+ real	1m7.996s
+ user	1m3.314s
+ sys	0m4.417s
+#+END_QUOTE
+
+** Incremental Compilation Time
+
+touch source/app.d
+time dub build -b release
+
+#+BEGIN_QUOTE
+ To force a rebuild of up-to-date targets, run again with --force.
+
+ real	0m6.889s
+ user	0m5.941s
+ sys	0m0.952s
+#+END_QUOTE
+
+** Execution Time
+
+dub run -b release
+test.sh
+
+#+BEGIN_QUOTE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ ** SIEGE 4.0.4
+ ** Preparing 25 concurrent users for battle.
+ The server is now under siege...
+ Transactions:		       25000 hits
+ Availability:		      100.00 %
+ Elapsed time:		        2.67 secs
+ Data transferred:	        0.37 MB
+ Response time:		        0.00 secs
+ Transaction rate:	     9363.30 trans/sec
+ Throughput:		        0.14 MB/sec
+ Concurrency:		       24.63
+ Successful transactions:       16675
+ Failed transactions:	           0
+ Longest transaction:	        0.01
+ Shortest transaction:	        0.00
+#+END_QUOTE
+
+** Binary Size
+
+12.7 MiB
+
+** Memory Usage
+
+#+BEGIN_SRC bash
+$ ps -o pid,tty,stat,time,%mem,rss,trs,vsz,command 13898
+    PID TT       STAT     TIME %MEM   RSS  TRS    VSZ COMMAND
+  13898 pts/1    S+   00:00:00  0.0 11972 7486  55828 /home/vnayar/projects/performance/d/web/web
+#+END_SRC
+
+Resident (Physical) Memory: 11.972 MiB
+Virtual (Total) Memory: 55.828 MiB
+
+* Test 4: D / Vibe.d / LDC2 v1.20.1 / Debug
+
+** Full Compilation Time
+
+DC=ldc2 time dub build --force
+
+#+BEGIN_QUOTE
+ Linking...
+
+ real	0m56.229s
+ user	0m51.116s
+ sys	0m4.788s
+#+END_QUOTE
+
+** Incremental Compilation Time
+
+touch source/app.d
+DC=ldc2 time dub build
+
+#+BEGIN_QUOTE
+ To force a rebuild of up-to-date targets, run again with --force.
+
+ real	0m5.290s
+ user	0m4.453s
+ sys	0m0.793s
+#+END_QUOTE
+
+** Execution Time
+
+dub run
+test.sh
+
+#+BEGIN_QUOTE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ ** SIEGE 4.0.4
+ ** Preparing 25 concurrent users for battle.
+ The server is now under siege...
+ Transactions:		       25000 hits
+ Availability:		      100.00 %
+ Elapsed time:		      138.74 secs
+ Data transferred:	        0.37 MB
+ Response time:		        0.14 secs
+ Transaction rate:	      180.19 trans/sec
+ Throughput:		        0.00 MB/sec
+ Concurrency:		       24.99
+ Successful transactions:       16675
+ Failed transactions:	           0
+ Longest transaction:	        0.41
+ Shortest transaction:	        0.00
+#+END_QUOTE
+
+** Binary Size
+
+18.4 MiB
+
+** Memory Usage
+
+#+BEGIN_SRC bash
+$ ps -o pid,tty,stat,time,%mem,rss,trs,vsz,command 14265
+    PID TT       STAT     TIME %MEM   RSS  TRS    VSZ COMMAND
+  14265 pts/1    Sl+  00:00:00  0.0 12112 3428 514912 /home/vnayar/projects/performance/d/web/web
+#+END_SRC
+
+Resident (Physical) Memory: 12.112 MiB
+Virtual (Total) Memory: 514.912 MiB
+
+* Test 5: D / Vibe.d / LDC2 v1.20.1 / Release
+
+** Full Compilation Time
+
+DC=ldc2 time dub build --force -b release
+
+#+BEGIN_QUOTE
+ Linking...
+
+ real	1m41.333s
+ user	1m37.546s
+ sys	0m3.547s
+#+END_QUOTE
+
+** Incremental Compilation Time
+
+touch source/app.d
+DC=ldc2 time dub build -b release
+
+#+BEGIN_QUOTE
+ To force a rebuild of up-to-date targets, run again with --force.
+
+ real	0m4.918s
+ user	0m4.302s
+ sys	0m0.575s
+#+END_QUOTE
+
+** Execution Time
+
+dub run -b release
+test.sh
+
+#+BEGIN_QUOTE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ IS ASCII: FALSE
+ ** SIEGE 4.0.4
+ ** Preparing 25 concurrent users for battle.
+ The server is now under siege...
+ Transactions:		       25000 hits
+ Availability:		      100.00 %
+ Elapsed time:		        2.34 secs
+ Data transferred:	        0.37 MB
+ Response time:		        0.00 secs
+ Transaction rate:	    10683.76 trans/sec
+ Throughput:		        0.16 MB/sec
+ Concurrency:		       24.50
+ Successful transactions:       16675
+ Failed transactions:	           0
+ Longest transaction:	        0.01
+ Shortest transaction:	        0.00
+#+END_QUOTE
+
+** Binary Size
+
+3.8 MiB
+
+** Memory Usage
+
+#+BEGIN_SRC bash
+$ ps -o pid,tty,stat,time,%mem,rss,trs,vsz,command 14471
+    PID TT       STAT     TIME %MEM   RSS  TRS    VSZ COMMAND
+  14471 pts/1    Sl+  00:00:00  0.0 11396 2298 513780 /home/vnayar/projects/performance/d/web/web
+#+END_SRC
+
+Resident (Physical) Memory: 11.396 MiB
+Virtual (Total) Memory: 513.780 MiB
